@@ -1,2 +1,0 @@
-# Micromouse
-simple micromouse simulation
