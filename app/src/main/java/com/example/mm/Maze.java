@@ -189,6 +189,7 @@ public class Maze {
         for (int x = 0; x < MAZE_SIZE; x++) {
             for (int y = 0; y < MAZE_SIZE; y++){
                 mCenterPoints[x][y] = new CoordinateXY();
+                saveCenterPoints(x,y);
             }
         }
     }

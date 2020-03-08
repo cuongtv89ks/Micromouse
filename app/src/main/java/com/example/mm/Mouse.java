@@ -14,18 +14,22 @@ public class Mouse {
     private int x = 25;
     private int y = 25;
 
+    private Matrix mMatrix;
+
     public Mouse(GameView game_view) {
         mGameView = game_view;
         mMaze = new Maze();
         mBitMapMouse = BitmapFactory.decodeResource(mGameView.getResources(), R.drawable.mouse);
+        mMatrix = new Matrix();
     }
 
-    public Bitmap mouseTurnLeft(){
-        Bitmap temp;
-        Matrix matrix = new Matrix();
-        matrix.postRotate(90);
-        temp = Bitmap.createBitmap(mBitMapMouse, 0, 0, mBitMapMouse.getWidth(), mBitMapMouse.getHeight(), matrix, true);
-        return temp;
+    public void mouseTurnLeft(Canvas canvas){
+        float angle = (float) x;
+        mMatrix.reset();
+        mMatrix.postTranslate(- mBitMapMouse.getWidth()/2,  - mBitMapMouse.getHeight()/2);
+        mMatrix.postRotate(angle);
+        mMatrix.postTranslate(mMaze.mCenterPoints[0][0].x,  mMaze.mCenterPoints[0][0].y);
+        canvas.drawBitmap(mBitMapMouse, mMatrix, null);
     }
 
     public void mouseTurnRight(){
@@ -37,12 +41,18 @@ public class Mouse {
     }
 
     private void update() {
-        x = x + mXSpeed;
+        if ( x >= 0 &x <= 90) {
+            x = x + mXSpeed;
+        } else if (x > 90){
+            x = x - mXSpeed;
+        }
+
         y = y + mYSpeed;
     }
 
     public void onDraw(Canvas canvas){
-        //update();
-        canvas.drawBitmap(mouseTurnLeft(), x, y, null);
+        update();
+        //canvas.drawBitmap(mouseTurnLeft(), x, y, null);
+        mouseTurnLeft(canvas);
     }
 }
